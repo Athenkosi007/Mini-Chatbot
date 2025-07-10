@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+
+namespace MiniChatBot
+{
+    class ChatBot
+    {
+        private Dictionary<string, string> knowledgeBase;
+
+        public ChatBot()
+        {
+            knowledgeBase = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "hi", "Hello there! How can I help you today?" },
+                { "hello", "Hi! What would you like to chat about?" },
+                { "how are you", "I'm just a bunch of code, but I'm feeling chatty!" },
+                { "weather", "I can't access weather data yet, but it's always sunny in C# land!" },
+                { "bye", "Goodbye! It was nice chatting with you." },
+                { "exit", "See you next time!" }
+            };
+        }
+
+        public string GetResponse(string input)
+        {
+            foreach (var key in knowledgeBase.Keys)
+            {
+                if (input.Contains(key, StringComparison.OrdinalIgnoreCase))
+                {
+                    return knowledgeBase[key];
+                }
+            }
+
+            return "I'm not sure how to respond to that. Try asking something else!";
+        }
+    }
+
+    class Program
+    {
+        static void Main()
+        {
+            var bot = new ChatBot();
+            Console.WriteLine("🤖 MiniChatBot: Type something to chat! Type 'exit' to quit.");
+
+            while (true)
+            {
+                Console.Write("> ");
+                string userInput = Console.ReadLine();
+
+                if (userInput == null || userInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine(bot.GetResponse("exit"));
+                    break;
+                }
+
+                string response = bot.GetResponse(userInput);
+                Console.WriteLine("🤖 " + response);
+            }
+        }
+    }
+}
